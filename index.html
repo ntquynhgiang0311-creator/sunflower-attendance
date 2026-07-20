@@ -1,6 +1,24 @@
 <!doctype html>
 <html lang="vi">
 <head>
+
+  <link rel="manifest" href="./manifest.json">
+
+<meta name="theme-color" content="#1569ad">
+
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+<meta
+  name="apple-mobile-web-app-title"
+  content="Sunflower"
+>
+
+<link
+  rel="apple-touch-icon"
+  href="./images/icon-192.png"
+>
   <meta charset="UTF-8">
 
   <meta
@@ -2178,6 +2196,29 @@ function togglePassword(button) {
 
     openApplication();
   </script>
-
+<script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener(
+      "load",
+      function () {
+        navigator.serviceWorker
+          .register("./sw.js", {
+            scope: "./"
+          })
+          .then(function () {
+            console.log(
+              "Sunflower PWA đã sẵn sàng."
+            );
+          })
+          .catch(function (error) {
+            console.error(
+              "Không đăng ký được PWA:",
+              error
+            );
+          });
+      }
+    );
+  }
+</script>
 </body>
 </html>
