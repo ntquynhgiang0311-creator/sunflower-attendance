@@ -550,6 +550,31 @@
         grid-template-columns: 1fr 1fr;
       }
     }
+    .password-box {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.password-input {
+  width: 130px;
+  min-height: 34px;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--text);
+}
+
+.password-toggle {
+  min-height: 34px;
+  padding: 6px 9px;
+  border: 0;
+  border-radius: 8px;
+  color: var(--dark-blue);
+  background: #eaf3fa;
+  font-weight: 700;
+}
   </style>
 </head>
 
@@ -901,17 +926,17 @@
           <table>
 
             <thead>
-              <tr>
-                <th>Mã NV</th>
-                <th>Họ tên</th>
-                <th>SĐT</th>
-                <th>Vai trò</th>
-                <th>Trạng thái</th>
-                <th>Thiết bị</th>
-                <th>Thao tác</th>
-                <th>Mật khẩu</th>
-              </tr>
-            </thead>
+  <tr>
+    <th>Mã NV</th>
+    <th>Họ tên</th>
+    <th>SĐT</th>
+    <th>Mật khẩu</th>
+    <th>Vai trò</th>
+    <th>Trạng thái</th>
+    <th>Thiết bị</th>
+    <th>Thao tác</th>
+  </tr>
+</thead>
 
             <tbody id="employeeListBody"></tbody>
 
@@ -1786,7 +1811,24 @@
         button.disabled = false;
       }
     }
+function togglePassword(button) {
+  const passwordInput =
+    button.parentElement.querySelector(
+      ".password-input"
+    );
 
+  if (!passwordInput) {
+    return;
+  }
+
+  if (passwordInput.type === "password") {
+    passwordInput.type = "text";
+    button.textContent = "Ẩn";
+  } else {
+    passwordInput.type = "password";
+    button.textContent = "Xem";
+  }
+}
     async function loadEmployees() {
       const result =
         await apiGet("employees");
@@ -1810,76 +1852,89 @@
             document.createElement("tr");
 
           row.innerHTML = `
-            <td>
-              ${escapeHtml(employee.manv)}
-            </td>
+  <td>
+    ${escapeHtml(employee.manv)}
+  </td>
 
-            <td>
-              ${escapeHtml(employee.hoten)}
-            </td>
+  <td>
+    ${escapeHtml(employee.hoten)}
+  </td>
 
-            <td>
-              ${escapeHtml(employee.phone)}
-            </td>
-<td>
-  <input
-    type="password"
-    value="${escapeHtml(employee.password || "")}"
-    readonly
-    style="width:140px; min-height:34px;"
-    ondblclick="this.type = this.type === 'password' ? 'text' : 'password'"
-  >
-</td>
-            <td>
-              ${escapeHtml(employee.role)}
-            </td>
+  <td>
+    ${escapeHtml(employee.phone)}
+  </td>
 
-            <td>
-              <span class="badge ${
-                active
-                  ? "badge-success"
-                  : "badge-danger"
-              }">
-                ${active
-                  ? "Hoạt động"
-                  : "Đã khóa"}
-              </span>
-            </td>
+  <td>
+    <div class="password-box">
 
-            <td>
-              ${employee.deviceLinked
-                ? "Đã liên kết"
-                : "Chưa liên kết"}
-            </td>
+      <input
+        class="password-input"
+        type="password"
+        value="${escapeHtml(employee.password || "")}"
+        readonly
+      >
 
-            <td>
-              <div class="action-group">
+      <button
+        type="button"
+        class="password-toggle"
+        onclick="togglePassword(this)"
+      >
+        Xem
+      </button>
 
-                <button
-                  class="small-button ${
-                    active
-                      ? "button-red"
-                      : "button-green"
-                  }"
-                  onclick="toggleEmployee(
-                    '${escapeHtml(employee.manv)}'
-                  )"
-                >
-                  ${active ? "Khóa" : "Mở"}
-                </button>
+    </div>
+  </td>
 
-                <button
-                  class="small-button button-light"
-                  onclick="resetDevice(
-                    '${escapeHtml(employee.manv)}'
-                  )"
-                >
-                  Mở thiết bị
-                </button>
+  <td>
+    ${escapeHtml(employee.role)}
+  </td>
 
-              </div>
-            </td>
-          `;
+  <td>
+    <span class="badge ${
+      active
+        ? "badge-success"
+        : "badge-danger"
+    }">
+      ${
+        active
+          ? "Hoạt động"
+          : "Đã khóa"
+      }
+    </span>
+  </td>
+
+  <td>
+    ${
+      employee.deviceLinked
+        ? "Đã liên kết"
+        : "Chưa liên kết"
+    }
+  </td>
+
+  <td>
+    <div class="action-group">
+
+      <button
+        class="small-button ${
+          active
+            ? "button-red"
+            : "button-green"
+        }"
+        onclick="toggleEmployee('${escapeHtml(employee.manv)}')"
+      >
+        ${active ? "Khóa" : "Mở"}
+      </button>
+
+      <button
+        class="small-button button-light"
+        onclick="resetDevice('${escapeHtml(employee.manv)}')"
+      >
+        Mở thiết bị
+      </button>
+
+    </div>
+  </td>
+`;
 
           body.appendChild(row);
         }
