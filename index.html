@@ -858,7 +858,15 @@
               required
             >
           </label>
-
+<td>
+  <input
+    type="password"
+    value="${escapeHtml(employee.password || "")}"
+    readonly
+    style="width:140px; min-height:34px;"
+    ondblclick="this.type = this.type === 'password' ? 'text' : 'password'"
+  >
+</td>
           <label>
             Mật khẩu
 
@@ -909,6 +917,7 @@
                 <th>Trạng thái</th>
                 <th>Thiết bị</th>
                 <th>Thao tác</th>
+                <th>Mật khẩu</th>
               </tr>
             </thead>
 
