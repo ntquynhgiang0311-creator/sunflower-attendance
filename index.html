@@ -1,0 +1,2119 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <title>Sunflower Attendance</title>
+
+  <meta name="theme-color" content="#1569ad">
+
+  <style>
+    :root {
+      --blue: #1569ad;
+      --dark-blue: #0b4f87;
+      --green: #69ad32;
+      --dark-green: #4f8c24;
+      --yellow: #f6bd28;
+      --orange: #f47a20;
+      --red: #c93c38;
+      --text: #17324a;
+      --muted: #71818f;
+      --background: #f3f8fb;
+      --surface: #ffffff;
+      --border: #dce7ef;
+      --shadow: 0 14px 36px rgba(18, 83, 130, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(
+          circle at top left,
+          rgba(246, 189, 40, 0.18),
+          transparent 430px
+        ),
+        radial-gradient(
+          circle at bottom right,
+          rgba(105, 173, 50, 0.15),
+          transparent 500px
+        ),
+        var(--background);
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .page {
+      width: min(1180px, calc(100% - 28px));
+      margin: auto;
+      padding: 22px 0 48px;
+    }
+
+    .login-view {
+      display: grid;
+      place-items: center;
+      min-height: 100vh;
+      padding: 22px;
+    }
+
+    .login-card {
+      width: min(430px, 100%);
+      padding: 32px;
+      border: 1px solid rgba(21, 105, 173, 0.12);
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.97);
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .login-logo {
+      width: 135px;
+      height: 135px;
+      margin-bottom: 12px;
+      object-fit: contain;
+    }
+
+    .login-card h1 {
+      margin: 0;
+      color: var(--dark-blue);
+      font-size: 25px;
+    }
+
+    .subtitle {
+      margin: 8px 0 26px;
+      color: var(--muted);
+    }
+
+    label {
+      display: grid;
+      gap: 7px;
+      margin-bottom: 15px;
+      color: var(--dark-blue);
+      font-weight: 700;
+      text-align: left;
+    }
+
+    input,
+    select {
+      width: 100%;
+      min-height: 48px;
+      padding: 11px 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface);
+      outline: none;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 4px rgba(21, 105, 173, 0.12);
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 11px 17px;
+      border: 0;
+      border-radius: 12px;
+      font-weight: 800;
+    }
+
+    .button-primary {
+      color: white;
+      background: linear-gradient(
+        135deg,
+        var(--blue),
+        var(--dark-blue)
+      );
+    }
+
+    .button-green {
+      color: white;
+      background: linear-gradient(
+        135deg,
+        var(--green),
+        var(--dark-green)
+      );
+    }
+
+    .button-orange {
+      color: white;
+      background: linear-gradient(
+        135deg,
+        var(--yellow),
+        var(--orange)
+      );
+    }
+
+    .button-red {
+      color: white;
+      background: var(--red);
+    }
+
+    .button-light {
+      color: var(--dark-blue);
+      background: #eaf3fa;
+    }
+
+    .button-full {
+      width: 100%;
+    }
+
+    .small-button {
+      min-height: 34px;
+      padding: 7px 10px;
+      border: 0;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 22px;
+      padding: 16px 20px;
+      border: 1px solid rgba(21, 105, 173, 0.1);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: 0 8px 24px rgba(13, 80, 130, 0.08);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .brand img {
+      width: 62px;
+      height: 62px;
+      object-fit: contain;
+    }
+
+    .brand h1 {
+      margin: 0;
+      color: var(--dark-blue);
+      font-size: 20px;
+    }
+
+    .brand p {
+      margin: 4px 0 0;
+      color: var(--muted);
+    }
+
+    .user-area {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .user-text {
+      text-align: right;
+    }
+
+    .user-text strong,
+    .user-text span {
+      display: block;
+    }
+
+    .user-text span {
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 20px;
+    }
+
+    .employee-grid {
+      grid-template-columns:
+        minmax(300px, 0.85fr)
+        minmax(0, 1.35fr);
+    }
+
+    .card {
+      padding: 22px;
+      overflow: hidden;
+      border: 1px solid rgba(21, 105, 173, 0.1);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.97);
+      box-shadow: var(--shadow);
+    }
+
+    .section-title {
+      margin: 0 0 17px;
+      color: var(--dark-blue);
+    }
+
+    .clock {
+      padding: 24px 15px;
+      border-radius: 18px;
+      background: linear-gradient(
+        135deg,
+        rgba(21, 105, 173, 0.1),
+        rgba(105, 173, 50, 0.11)
+      );
+      text-align: center;
+    }
+
+    .clock-time {
+      color: var(--dark-blue);
+      font-size: clamp(42px, 7vw, 66px);
+      font-weight: 900;
+      letter-spacing: -4px;
+    }
+
+    .clock-date {
+      margin-top: 7px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .location-box {
+      margin-top: 16px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: #fbfdff;
+    }
+
+    .location-box p {
+      margin: 7px 0;
+    }
+
+    .attendance-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .attendance-actions button {
+      min-height: 62px;
+      font-size: 17px;
+    }
+
+    .today-grid {
+      display: grid;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .today-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      padding: 13px 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    .today-row span {
+      color: var(--muted);
+    }
+
+    .today-row strong {
+      color: var(--dark-blue);
+    }
+
+    .message {
+      min-height: 22px;
+      margin-top: 14px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .message.success {
+      color: var(--dark-green);
+    }
+
+    .message.error {
+      color: var(--red);
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 15px;
+    }
+
+    .toolbar h2 {
+      margin: 0;
+      color: var(--dark-blue);
+    }
+
+    .toolbar-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+
+    table {
+      width: 100%;
+      min-width: 680px;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      padding: 12px 13px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    th {
+      color: white;
+      background: var(--blue);
+      font-size: 13px;
+    }
+
+    tbody tr:hover {
+      background: rgba(246, 189, 40, 0.08);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 5px 9px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .badge-success {
+      color: #346b17;
+      background: #e5f4da;
+    }
+
+    .badge-warning {
+      color: #8b5310;
+      background: #fff0cf;
+    }
+
+    .badge-danger {
+      color: #8b2623;
+      background: #fde4e2;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .summary-card {
+      padding: 17px;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      background: white;
+    }
+
+    .summary-card span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .summary-card strong {
+      display: block;
+      margin-top: 7px;
+      color: var(--dark-blue);
+      font-size: 29px;
+    }
+
+    .admin-stack {
+      display: grid;
+      gap: 20px;
+    }
+
+    .employee-form {
+      display: grid;
+      grid-template-columns:
+        1.3fr 1fr 1fr 0.7fr auto;
+      gap: 12px;
+      align-items: end;
+    }
+
+    .employee-form label {
+      margin: 0;
+    }
+
+    .action-group {
+      display: flex;
+      gap: 6px;
+    }
+
+    .empty {
+      padding: 25px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    @media (max-width: 900px) {
+      .employee-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .employee-form {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .summary-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .page {
+        width: calc(100% - 18px);
+        padding-top: 10px;
+      }
+
+      .topbar {
+        align-items: flex-start;
+        padding: 13px;
+      }
+
+      .brand h1 {
+        font-size: 15px;
+      }
+
+      .brand p,
+      .user-text {
+        display: none;
+      }
+
+      .card {
+        padding: 15px;
+      }
+
+      .attendance-actions,
+      .employee-form {
+        grid-template-columns: 1fr;
+      }
+
+      .toolbar {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .toolbar-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .summary-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ĐĂNG NHẬP -->
+  <section id="loginView" class="login-view">
+
+    <div class="login-card">
+
+      <img
+        src="images/logo.png"
+        class="login-logo"
+        alt="Sunflower Kindergarten"
+      >
+
+      <h1>SUNFLOWER KINDERGARTEN</h1>
+
+      <p class="subtitle">
+        Hệ thống chấm công IN / OUT
+      </p>
+
+      <form id="loginForm">
+
+        <label>
+          Số điện thoại
+
+          <input
+            id="loginPhone"
+            autocomplete="username"
+            placeholder="Nhập số điện thoại"
+            required
+          >
+        </label>
+
+        <label>
+          Mật khẩu
+
+          <input
+            id="loginPassword"
+            type="password"
+            autocomplete="current-password"
+            placeholder="Nhập mật khẩu"
+            required
+          >
+        </label>
+
+        <button
+          id="loginButton"
+          class="button button-primary button-full"
+          type="submit"
+        >
+          ĐĂNG NHẬP
+        </button>
+
+      </form>
+
+      <div id="loginMessage" class="message"></div>
+
+    </div>
+
+  </section>
+
+  <!-- NHÂN VIÊN -->
+  <main id="employeeView" class="page hidden">
+
+    <header class="topbar">
+
+      <div class="brand">
+
+        <img src="images/logo.png" alt="Logo trường">
+
+        <div>
+          <h1>SUNFLOWER KINDERGARTEN</h1>
+          <p>Chấm công nhân viên</p>
+        </div>
+
+      </div>
+
+      <div class="user-area">
+
+        <div class="user-text">
+          <strong id="employeeName">—</strong>
+          <span id="employeeCode">—</span>
+        </div>
+
+        <button
+          class="button button-light"
+          onclick="logout()"
+        >
+          Đăng xuất
+        </button>
+
+      </div>
+
+    </header>
+
+    <section class="grid employee-grid">
+
+      <article class="card">
+
+        <div class="clock">
+
+          <div id="clockTime" class="clock-time">
+            00:00:00
+          </div>
+
+          <div id="clockDate" class="clock-date">
+            —
+          </div>
+
+        </div>
+
+        <div class="location-box">
+
+          <p>
+            📍 <strong>Vị trí:</strong>
+            <span id="gpsStatus">Chưa xác định</span>
+          </p>
+
+          <p>
+            📏 <strong>Khoảng cách:</strong>
+            <span id="gpsDistance">—</span>
+          </p>
+
+          <p>
+            🎯 <strong>Phạm vi:</strong>
+            <span id="schoolRadius">100 m</span>
+          </p>
+
+          <p>
+            🛰 <strong>Sai số GPS:</strong>
+            <span id="gpsAccuracy">—</span>
+          </p>
+
+        </div>
+
+        <div class="attendance-actions">
+
+          <button
+            id="inButton"
+            class="button button-green"
+            onclick="submitAttendance('IN')"
+          >
+            CHẤM IN
+          </button>
+
+          <button
+            id="outButton"
+            class="button button-orange"
+            onclick="submitAttendance('OUT')"
+          >
+            CHẤM OUT
+          </button>
+
+        </div>
+
+        <div class="today-grid">
+
+          <div class="today-row">
+            <span>Giờ IN hôm nay</span>
+            <strong id="todayIn">—</strong>
+          </div>
+
+          <div class="today-row">
+            <span>Giờ OUT hôm nay</span>
+            <strong id="todayOut">—</strong>
+          </div>
+
+        </div>
+
+        <div id="attendanceMessage" class="message"></div>
+
+      </article>
+
+      <article class="card">
+
+        <div class="toolbar">
+
+          <h2>Lịch sử IN / OUT</h2>
+
+          <input
+            id="employeeMonth"
+            type="month"
+          >
+
+        </div>
+
+        <div class="table-wrap">
+
+          <table>
+
+            <thead>
+              <tr>
+                <th>Ngày</th>
+                <th>Giờ IN</th>
+                <th>Giờ OUT</th>
+                <th>Trạng thái</th>
+              </tr>
+            </thead>
+
+            <tbody id="employeeHistoryBody"></tbody>
+
+          </table>
+
+          <div
+            id="employeeHistoryEmpty"
+            class="empty hidden"
+          >
+            Chưa có dữ liệu trong tháng.
+          </div>
+
+        </div>
+
+      </article>
+
+    </section>
+
+  </main>
+
+  <!-- ADMIN -->
+  <main id="adminView" class="page hidden">
+
+    <header class="topbar">
+
+      <div class="brand">
+
+        <img src="images/logo.png" alt="Logo trường">
+
+        <div>
+          <h1>SUNFLOWER KINDERGARTEN</h1>
+          <p>Quản trị chấm công</p>
+        </div>
+
+      </div>
+
+      <div class="user-area">
+
+        <div class="user-text">
+          <strong id="adminName">—</strong>
+          <span>Quản trị viên</span>
+        </div>
+
+        <button
+          class="button button-light"
+          onclick="logout()"
+        >
+          Đăng xuất
+        </button>
+
+      </div>
+
+    </header>
+
+    <section class="summary-grid">
+
+      <div class="summary-card">
+        <span>Nhân viên hoạt động</span>
+        <strong id="totalEmployees">0</strong>
+      </div>
+
+      <div class="summary-card">
+        <span>Đã IN hôm nay</span>
+        <strong id="checkedIn">0</strong>
+      </div>
+
+      <div class="summary-card">
+        <span>Đã OUT hôm nay</span>
+        <strong id="checkedOut">0</strong>
+      </div>
+
+      <div class="summary-card">
+        <span>Thiếu OUT</span>
+        <strong id="missingOut">0</strong>
+      </div>
+
+    </section>
+
+    <section class="admin-stack">
+
+      <article class="card">
+
+        <h2 class="section-title">
+          Thêm nhân viên
+        </h2>
+
+        <form
+          id="employeeForm"
+          class="employee-form"
+        >
+
+          <label>
+            Họ và tên
+
+            <input
+              id="newEmployeeName"
+              required
+            >
+          </label>
+
+          <label>
+            Số điện thoại
+
+            <input
+              id="newEmployeePhone"
+              required
+            >
+          </label>
+
+          <label>
+            Mật khẩu
+
+            <input
+              id="newEmployeePassword"
+              type="password"
+              minlength="6"
+              required
+            >
+          </label>
+
+          <label>
+            Vai trò
+
+            <select id="newEmployeeRole">
+              <option value="Employee">
+                Nhân viên
+              </option>
+
+              <option value="Admin">
+                Admin
+              </option>
+            </select>
+          </label>
+
+          <button
+            id="addEmployeeButton"
+            class="button button-green"
+            type="submit"
+          >
+            THÊM NHÂN VIÊN
+          </button>
+
+        </form>
+
+        <div id="employeeMessage" class="message"></div>
+
+        <div class="table-wrap">
+
+          <table>
+
+            <thead>
+              <tr>
+                <th>Mã NV</th>
+                <th>Họ tên</th>
+                <th>SĐT</th>
+                <th>Vai trò</th>
+                <th>Trạng thái</th>
+                <th>Thiết bị</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+
+            <tbody id="employeeListBody"></tbody>
+
+          </table>
+
+        </div>
+
+      </article>
+
+      <article class="card">
+
+        <div class="toolbar">
+
+          <h2>Bảng IN / OUT theo tháng</h2>
+
+          <div class="toolbar-actions">
+
+            <input
+              id="adminMonth"
+              type="month"
+            >
+
+            <button
+              class="button button-primary"
+              onclick="loadAdminAttendance()"
+            >
+              Xem
+            </button>
+
+            <button
+              class="button button-green"
+              onclick="exportAttendanceCsv()"
+            >
+              Xuất CSV
+            </button>
+
+          </div>
+
+        </div>
+
+        <div class="table-wrap">
+
+          <table>
+
+            <thead>
+              <tr>
+                <th>Ngày</th>
+                <th>Mã NV</th>
+                <th>Họ tên</th>
+                <th>Giờ IN</th>
+                <th>Giờ OUT</th>
+                <th>Trạng thái</th>
+              </tr>
+            </thead>
+
+            <tbody id="adminAttendanceBody"></tbody>
+
+          </table>
+
+          <div
+            id="adminAttendanceEmpty"
+            class="empty hidden"
+          >
+            Chưa có dữ liệu trong tháng.
+          </div>
+
+        </div>
+
+        <div id="adminMessage" class="message"></div>
+
+      </article>
+
+    </section>
+
+  </main>
+
+  <script>
+    const API_URL =
+      "https://script.google.com/macros/s/AKfycby_DGzcZPaEW5-GX17BrRMqbe0vePbFzFeyL2m4CWZh_MZZ-BhXdfPTVlWHGb2SBdPmZQ/exec";
+
+    const TOKEN_KEY =
+      "sunflower_attendance_token";
+
+    const USER_KEY =
+      "sunflower_attendance_user";
+
+    const DEVICE_KEY =
+      "sunflower_attendance_device";
+
+    let schoolConfig = null;
+    let todayRecord = null;
+    let adminAttendanceRecords = [];
+    let attendanceSubmitting = false;
+
+    function getToken() {
+      return localStorage.getItem(TOKEN_KEY) || "";
+    }
+
+    function getUser() {
+      try {
+        return JSON.parse(
+          localStorage.getItem(USER_KEY) || "null"
+        );
+      } catch {
+        return null;
+      }
+    }
+
+    function saveSession(token, user) {
+      localStorage.setItem(TOKEN_KEY, token);
+
+      localStorage.setItem(
+        USER_KEY,
+        JSON.stringify(user)
+      );
+    }
+
+    function clearSession() {
+      localStorage.removeItem(TOKEN_KEY);
+      localStorage.removeItem(USER_KEY);
+    }
+
+    function getDeviceId() {
+      let deviceId =
+        localStorage.getItem(DEVICE_KEY);
+
+      if (deviceId) {
+        return deviceId;
+      }
+
+      if (
+        window.crypto &&
+        typeof window.crypto.randomUUID === "function"
+      ) {
+        deviceId = window.crypto.randomUUID();
+      } else {
+        deviceId =
+          "device-" +
+          Date.now() +
+          "-" +
+          Math.random()
+            .toString(36)
+            .slice(2);
+      }
+
+      localStorage.setItem(
+        DEVICE_KEY,
+        deviceId
+      );
+
+      return deviceId;
+    }
+
+    async function apiGet(action, params = {}) {
+      const query = new URLSearchParams({
+        action,
+        token: getToken(),
+        ...params
+      });
+
+      const response = await fetch(
+        API_URL + "?" + query.toString()
+      );
+
+      if (!response.ok) {
+        throw new Error(
+          "API lỗi HTTP " + response.status
+        );
+      }
+
+      const data = await response.json();
+
+      if (!data.success) {
+        throw new Error(
+          data.message ||
+          "Không thể kết nối hệ thống."
+        );
+      }
+
+      return data;
+    }
+
+    async function apiPost(action, data = {}) {
+      const response = await fetch(
+        API_URL,
+        {
+          method: "POST",
+
+          body: JSON.stringify({
+            action,
+            token: getToken(),
+            ...data
+          })
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(
+          "API lỗi HTTP " + response.status
+        );
+      }
+
+      const result = await response.json();
+
+      if (!result.success) {
+        throw new Error(
+          result.message ||
+          "Không thể kết nối hệ thống."
+        );
+      }
+
+      return result;
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function setMessage(
+      elementId,
+      message,
+      type = ""
+    ) {
+      const element =
+        document.getElementById(elementId);
+
+      if (!element) {
+        return;
+      }
+
+      element.textContent = message || "";
+
+      element.className =
+        "message" +
+        (type ? " " + type : "");
+    }
+
+    function currentMonth() {
+      const date = new Date();
+
+      return (
+        date.getFullYear() +
+        "-" +
+        String(date.getMonth() + 1)
+          .padStart(2, "0")
+      );
+    }
+
+    function formatDate(value) {
+      if (!value) {
+        return "—";
+      }
+
+      const parts =
+        String(value).split("-");
+
+      if (parts.length !== 3) {
+        return value;
+      }
+
+      return (
+        parts[2] +
+        "/" +
+        parts[1] +
+        "/" +
+        parts[0]
+      );
+    }
+
+    function logout() {
+      clearSession();
+      location.reload();
+    }
+
+    document
+      .getElementById("loginForm")
+      .addEventListener(
+        "submit",
+        login
+      );
+
+    document
+      .getElementById("employeeForm")
+      .addEventListener(
+        "submit",
+        addEmployee
+      );
+
+    document
+      .getElementById("employeeMonth")
+      .addEventListener(
+        "change",
+        loadEmployeeHistory
+      );
+
+    document
+      .getElementById("adminMonth")
+      .addEventListener(
+        "change",
+        loadAdminAttendance
+      );
+
+    async function login(event) {
+      event.preventDefault();
+
+      const button =
+        document.getElementById(
+          "loginButton"
+        );
+
+      button.disabled = true;
+
+      setMessage(
+        "loginMessage",
+        "Đang đăng nhập..."
+      );
+
+      try {
+        const result = await apiPost(
+          "login",
+          {
+            phone:
+              document.getElementById(
+                "loginPhone"
+              ).value.trim(),
+
+            password:
+              document.getElementById(
+                "loginPassword"
+              ).value,
+
+            deviceId:
+              getDeviceId()
+          }
+        );
+
+        saveSession(
+          result.token,
+          result.user
+        );
+
+        await openApplication();
+      } catch (error) {
+        setMessage(
+          "loginMessage",
+          error.message,
+          "error"
+        );
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    async function openApplication() {
+      const user = getUser();
+
+      document
+        .getElementById("loginView")
+        .classList.add("hidden");
+
+      document
+        .getElementById("employeeView")
+        .classList.add("hidden");
+
+      document
+        .getElementById("adminView")
+        .classList.add("hidden");
+
+      if (!user || !getToken()) {
+        document
+          .getElementById("loginView")
+          .classList.remove("hidden");
+
+        return;
+      }
+
+      try {
+        const configResult =
+          await apiGet("config");
+
+        schoolConfig =
+          configResult.config;
+      } catch (error) {
+        console.warn(error);
+      }
+
+      if (
+        String(user.role).toLowerCase() ===
+        "admin"
+      ) {
+        await openAdmin(user);
+      } else {
+        await openEmployee(user);
+      }
+    }
+
+    async function openEmployee(user) {
+      document
+        .getElementById("employeeView")
+        .classList.remove("hidden");
+
+      document.getElementById(
+        "employeeName"
+      ).textContent = user.hoten;
+
+      document.getElementById(
+        "employeeCode"
+      ).textContent = user.manv;
+
+      document.getElementById(
+        "employeeMonth"
+      ).value = currentMonth();
+
+      if (schoolConfig) {
+        document.getElementById(
+          "schoolRadius"
+        ).textContent =
+          schoolConfig.radiusMeters + " m";
+      }
+
+      updateClock();
+
+      await Promise.all([
+        loadToday(),
+        loadEmployeeHistory()
+      ]);
+    }
+
+    async function openAdmin(user) {
+      document
+        .getElementById("adminView")
+        .classList.remove("hidden");
+
+      document.getElementById(
+        "adminName"
+      ).textContent = user.hoten;
+
+      document.getElementById(
+        "adminMonth"
+      ).value = currentMonth();
+
+      await Promise.all([
+        loadAdminSummary(),
+        loadEmployees(),
+        loadAdminAttendance()
+      ]);
+    }
+
+    function updateClock() {
+      const date = new Date();
+
+      document.getElementById(
+        "clockTime"
+      ).textContent =
+        date.toLocaleTimeString(
+          "vi-VN",
+          {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+          }
+        );
+
+      document.getElementById(
+        "clockDate"
+      ).textContent =
+        date.toLocaleDateString(
+          "vi-VN",
+          {
+            weekday: "long",
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric"
+          }
+        );
+    }
+
+    setInterval(updateClock, 1000);
+
+    function getGpsPosition() {
+      return new Promise(
+        function (resolve, reject) {
+          if (!navigator.geolocation) {
+            reject(
+              new Error(
+                "Thiết bị không hỗ trợ GPS."
+              )
+            );
+
+            return;
+          }
+
+          navigator.geolocation
+            .getCurrentPosition(
+              function (position) {
+                resolve({
+                  latitude:
+                    position.coords.latitude,
+
+                  longitude:
+                    position.coords.longitude,
+
+                  accuracy:
+                    position.coords.accuracy
+                });
+              },
+
+              function (error) {
+                const messages = {
+                  1:
+                    "Bạn chưa cấp quyền truy cập vị trí.",
+
+                  2:
+                    "Không xác định được vị trí hiện tại.",
+
+                  3:
+                    "GPS phản hồi quá lâu."
+                };
+
+                reject(
+                  new Error(
+                    messages[error.code] ||
+                    "Không lấy được GPS."
+                  )
+                );
+              },
+
+              {
+                enableHighAccuracy: true,
+                timeout: 15000,
+                maximumAge: 0
+              }
+            );
+        }
+      );
+    }
+
+    function distanceMeters(
+      lat1,
+      lng1,
+      lat2,
+      lng2
+    ) {
+      const earthRadius = 6371000;
+
+      const radians =
+        value =>
+          value * Math.PI / 180;
+
+      const deltaLat =
+        radians(lat2 - lat1);
+
+      const deltaLng =
+        radians(lng2 - lng1);
+
+      const calculation =
+        Math.sin(deltaLat / 2) ** 2 +
+        Math.cos(radians(lat1)) *
+          Math.cos(radians(lat2)) *
+          Math.sin(deltaLng / 2) ** 2;
+
+      return (
+        earthRadius *
+        2 *
+        Math.atan2(
+          Math.sqrt(calculation),
+          Math.sqrt(1 - calculation)
+        )
+      );
+    }
+
+    async function submitAttendance(type) {
+      if (attendanceSubmitting) {
+        return;
+      }
+
+      attendanceSubmitting = true;
+      renderAttendanceButtons();
+
+      setMessage(
+        "attendanceMessage",
+        "Đang xác định vị trí..."
+      );
+
+      try {
+        const position =
+          await getGpsPosition();
+
+        if (schoolConfig) {
+          const distance =
+            distanceMeters(
+              position.latitude,
+              position.longitude,
+              schoolConfig.latitude,
+              schoolConfig.longitude
+            );
+
+          document.getElementById(
+            "gpsDistance"
+          ).textContent =
+            Math.round(distance) + " m";
+
+          document.getElementById(
+            "gpsAccuracy"
+          ).textContent =
+            Math.round(position.accuracy) +
+            " m";
+
+          document.getElementById(
+            "gpsStatus"
+          ).textContent =
+            distance <=
+            schoolConfig.radiusMeters
+              ? "Trong phạm vi trường"
+              : "Ngoài phạm vi trường";
+        }
+
+        const action =
+          type === "IN"
+            ? "checkIn"
+            : "checkOut";
+
+        const result =
+          await apiPost(
+            action,
+            {
+              latitude:
+                position.latitude,
+
+              longitude:
+                position.longitude,
+
+              accuracy:
+                position.accuracy,
+
+              deviceId:
+                getDeviceId()
+            }
+          );
+
+        todayRecord =
+          result.record;
+
+        renderToday();
+
+        await loadEmployeeHistory();
+
+        setMessage(
+          "attendanceMessage",
+          result.message,
+          "success"
+        );
+      } catch (error) {
+        setMessage(
+          "attendanceMessage",
+          error.message,
+          "error"
+        );
+      } finally {
+        attendanceSubmitting = false;
+        renderAttendanceButtons();
+      }
+    }
+
+    async function loadToday() {
+      const result =
+        await apiGet("today");
+
+      todayRecord =
+        result.record;
+
+      renderToday();
+    }
+
+    function renderToday() {
+      document.getElementById(
+        "todayIn"
+      ).textContent =
+        todayRecord?.checkIn || "—";
+
+      document.getElementById(
+        "todayOut"
+      ).textContent =
+        todayRecord?.checkOut || "—";
+
+      renderAttendanceButtons();
+    }
+
+    function renderAttendanceButtons() {
+      const inButton =
+        document.getElementById(
+          "inButton"
+        );
+
+      const outButton =
+        document.getElementById(
+          "outButton"
+        );
+
+      inButton.disabled =
+        attendanceSubmitting ||
+        Boolean(todayRecord?.checkIn);
+
+      outButton.disabled =
+        attendanceSubmitting ||
+        !todayRecord?.checkIn ||
+        Boolean(todayRecord?.checkOut);
+    }
+
+    async function loadEmployeeHistory() {
+      try {
+        const month =
+          document.getElementById(
+            "employeeMonth"
+          ).value;
+
+        const result =
+          await apiGet(
+            "history",
+            { month }
+          );
+
+        const body =
+          document.getElementById(
+            "employeeHistoryBody"
+          );
+
+        const empty =
+          document.getElementById(
+            "employeeHistoryEmpty"
+          );
+
+        body.innerHTML = "";
+
+        empty.classList.toggle(
+          "hidden",
+          result.records.length > 0
+        );
+
+        result.records.forEach(
+          function (record) {
+            const row =
+              document.createElement("tr");
+
+            row.innerHTML = `
+              <td>
+                ${escapeHtml(formatDate(record.date))}
+              </td>
+
+              <td>
+                ${escapeHtml(record.checkIn || "—")}
+              </td>
+
+              <td>
+                ${escapeHtml(record.checkOut || "—")}
+              </td>
+
+              <td>
+                <span class="badge ${
+                  record.checkOut
+                    ? "badge-success"
+                    : "badge-warning"
+                }">
+                  ${escapeHtml(record.status)}
+                </span>
+              </td>
+            `;
+
+            body.appendChild(row);
+          }
+        );
+      } catch (error) {
+        setMessage(
+          "attendanceMessage",
+          error.message,
+          "error"
+        );
+      }
+    }
+
+    async function loadAdminSummary() {
+      const result =
+        await apiGet(
+          "adminSummary"
+        );
+
+      const summary =
+        result.summary;
+
+      document.getElementById(
+        "totalEmployees"
+      ).textContent =
+        summary.totalEmployees || 0;
+
+      document.getElementById(
+        "checkedIn"
+      ).textContent =
+        summary.checkedIn || 0;
+
+      document.getElementById(
+        "checkedOut"
+      ).textContent =
+        summary.checkedOut || 0;
+
+      document.getElementById(
+        "missingOut"
+      ).textContent =
+        summary.missingOut || 0;
+    }
+
+    async function addEmployee(event) {
+      event.preventDefault();
+
+      const button =
+        document.getElementById(
+          "addEmployeeButton"
+        );
+
+      button.disabled = true;
+
+      try {
+        const result =
+          await apiPost(
+            "addEmployee",
+            {
+              fullName:
+                document.getElementById(
+                  "newEmployeeName"
+                ).value.trim(),
+
+              phone:
+                document.getElementById(
+                  "newEmployeePhone"
+                ).value.trim(),
+
+              password:
+                document.getElementById(
+                  "newEmployeePassword"
+                ).value,
+
+              role:
+                document.getElementById(
+                  "newEmployeeRole"
+                ).value
+            }
+          );
+
+        setMessage(
+          "employeeMessage",
+          result.message,
+          "success"
+        );
+
+        event.target.reset();
+
+        await Promise.all([
+          loadEmployees(),
+          loadAdminSummary()
+        ]);
+      } catch (error) {
+        setMessage(
+          "employeeMessage",
+          error.message,
+          "error"
+        );
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    async function loadEmployees() {
+      const result =
+        await apiGet("employees");
+
+      const body =
+        document.getElementById(
+          "employeeListBody"
+        );
+
+      body.innerHTML = "";
+
+      result.employees.forEach(
+        function (employee) {
+          const active =
+            String(
+              employee.status
+            ).toLowerCase() ===
+            "active";
+
+          const row =
+            document.createElement("tr");
+
+          row.innerHTML = `
+            <td>
+              ${escapeHtml(employee.manv)}
+            </td>
+
+            <td>
+              ${escapeHtml(employee.hoten)}
+            </td>
+
+            <td>
+              ${escapeHtml(employee.phone)}
+            </td>
+
+            <td>
+              ${escapeHtml(employee.role)}
+            </td>
+
+            <td>
+              <span class="badge ${
+                active
+                  ? "badge-success"
+                  : "badge-danger"
+              }">
+                ${active
+                  ? "Hoạt động"
+                  : "Đã khóa"}
+              </span>
+            </td>
+
+            <td>
+              ${employee.deviceLinked
+                ? "Đã liên kết"
+                : "Chưa liên kết"}
+            </td>
+
+            <td>
+              <div class="action-group">
+
+                <button
+                  class="small-button ${
+                    active
+                      ? "button-red"
+                      : "button-green"
+                  }"
+                  onclick="toggleEmployee(
+                    '${escapeHtml(employee.manv)}'
+                  )"
+                >
+                  ${active ? "Khóa" : "Mở"}
+                </button>
+
+                <button
+                  class="small-button button-light"
+                  onclick="resetDevice(
+                    '${escapeHtml(employee.manv)}'
+                  )"
+                >
+                  Mở thiết bị
+                </button>
+
+              </div>
+            </td>
+          `;
+
+          body.appendChild(row);
+        }
+      );
+    }
+
+    async function toggleEmployee(
+      employeeCode
+    ) {
+      if (
+        !confirm(
+          "Xác nhận đổi trạng thái nhân viên?"
+        )
+      ) {
+        return;
+      }
+
+      try {
+        const result =
+          await apiPost(
+            "toggleEmployee",
+            { employeeCode }
+          );
+
+        setMessage(
+          "employeeMessage",
+          result.message,
+          "success"
+        );
+
+        await Promise.all([
+          loadEmployees(),
+          loadAdminSummary()
+        ]);
+      } catch (error) {
+        setMessage(
+          "employeeMessage",
+          error.message,
+          "error"
+        );
+      }
+    }
+
+    async function resetDevice(
+      employeeCode
+    ) {
+      if (
+        !confirm(
+          "Xác nhận mở khóa thiết bị?"
+        )
+      ) {
+        return;
+      }
+
+      try {
+        const result =
+          await apiPost(
+            "resetDevice",
+            { employeeCode }
+          );
+
+        setMessage(
+          "employeeMessage",
+          result.message,
+          "success"
+        );
+
+        await loadEmployees();
+      } catch (error) {
+        setMessage(
+          "employeeMessage",
+          error.message,
+          "error"
+        );
+      }
+    }
+
+    async function loadAdminAttendance() {
+      try {
+        const month =
+          document.getElementById(
+            "adminMonth"
+          ).value;
+
+        const result =
+          await apiGet(
+            "adminAttendance",
+            { month }
+          );
+
+        adminAttendanceRecords =
+          result.records;
+
+        const body =
+          document.getElementById(
+            "adminAttendanceBody"
+          );
+
+        const empty =
+          document.getElementById(
+            "adminAttendanceEmpty"
+          );
+
+        body.innerHTML = "";
+
+        empty.classList.toggle(
+          "hidden",
+          result.records.length > 0
+        );
+
+        result.records.forEach(
+          function (record) {
+            const row =
+              document.createElement("tr");
+
+            row.innerHTML = `
+              <td>
+                ${escapeHtml(formatDate(record.date))}
+              </td>
+
+              <td>
+                ${escapeHtml(record.manv)}
+              </td>
+
+              <td>
+                ${escapeHtml(record.hoten)}
+              </td>
+
+              <td>
+                ${escapeHtml(record.checkIn || "—")}
+              </td>
+
+              <td>
+                ${escapeHtml(record.checkOut || "—")}
+              </td>
+
+              <td>
+                <span class="badge ${
+                  record.checkOut
+                    ? "badge-success"
+                    : "badge-warning"
+                }">
+                  ${escapeHtml(record.status)}
+                </span>
+              </td>
+            `;
+
+            body.appendChild(row);
+          }
+        );
+      } catch (error) {
+        setMessage(
+          "adminMessage",
+          error.message,
+          "error"
+        );
+      }
+    }
+
+    function exportAttendanceCsv() {
+      if (!adminAttendanceRecords.length) {
+        alert(
+          "Không có dữ liệu để xuất."
+        );
+
+        return;
+      }
+
+      const rows = [
+        [
+          "Ngày",
+          "Mã nhân viên",
+          "Họ tên",
+          "Giờ IN",
+          "Giờ OUT",
+          "Trạng thái"
+        ],
+
+        ...adminAttendanceRecords.map(
+          function (record) {
+            return [
+              record.date,
+              record.manv,
+              record.hoten,
+              record.checkIn,
+              record.checkOut,
+              record.status
+            ];
+          }
+        )
+      ];
+
+      const csv =
+        "\uFEFF" +
+        rows
+          .map(function (row) {
+            return row
+              .map(function (value) {
+                return (
+                  '"' +
+                  String(value || "")
+                    .replaceAll(
+                      '"',
+                      '""'
+                    ) +
+                  '"'
+                );
+              })
+              .join(",");
+          })
+          .join("\n");
+
+      const blob =
+        new Blob(
+          [csv],
+          {
+            type:
+              "text/csv;charset=utf-8"
+          }
+        );
+
+      const url =
+        URL.createObjectURL(blob);
+
+      const link =
+        document.createElement("a");
+
+      link.href = url;
+
+      link.download =
+        "cham-cong-" +
+        document.getElementById(
+          "adminMonth"
+        ).value +
+        ".csv";
+
+      link.click();
+
+      URL.revokeObjectURL(url);
+    }
+
+    openApplication();
+  </script>
+
+</body>
+</html>

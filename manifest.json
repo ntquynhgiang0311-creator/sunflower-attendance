@@ -1,0 +1,15 @@
+{
+  "name": "Sunflower Attendance",
+  "short_name": "Sunflower",
+  "display": "standalone",
+  "start_url": "./index.html",
+  "theme_color": "#1468ad",
+  "background_color": "#f3f8fb",
+  "icons": [
+    {
+      "src": "images/logo.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}
