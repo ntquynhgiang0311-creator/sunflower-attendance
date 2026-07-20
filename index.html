@@ -858,15 +858,7 @@
               required
             >
           </label>
-<td>
-  <input
-    type="password"
-    value="${escapeHtml(employee.password || "")}"
-    readonly
-    style="width:140px; min-height:34px;"
-    ondblclick="this.type = this.type === 'password' ? 'text' : 'password'"
-  >
-</td>
+
           <label>
             Mật khẩu
 
@@ -1829,7 +1821,15 @@
             <td>
               ${escapeHtml(employee.phone)}
             </td>
-
+<td>
+  <input
+    type="password"
+    value="${escapeHtml(employee.password || "")}"
+    readonly
+    style="width:140px; min-height:34px;"
+    ondblclick="this.type = this.type === 'password' ? 'text' : 'password'"
+  >
+</td>
             <td>
               ${escapeHtml(employee.role)}
             </td>
